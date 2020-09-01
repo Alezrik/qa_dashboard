@@ -60,4 +60,4 @@ jobs:
       - run: mix format --check-formatted
       - run: mix test
       - run: mix credo
-      - run: mix dialyzer
+      - run: MIX_ENV=dev mix dialyzer
