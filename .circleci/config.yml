@@ -7,7 +7,11 @@ jobs:
     docker:
       # specify the version here
       - image: circleci/elixir:1.10.2
-
+      - image: circleci/postgres:10.1-alpine
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: qa_dashboard_test
+          POSTGRES_PASSWORD: postgres
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
@@ -22,4 +26,5 @@ jobs:
       - run: mix local.rebar --force
       - run: mix deps.get
       - run: mix ecto.create
+      - run: mix ecto.migrate
       - run: mix test
