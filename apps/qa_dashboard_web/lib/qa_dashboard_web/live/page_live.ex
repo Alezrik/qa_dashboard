@@ -1,4 +1,5 @@
 defmodule QaDashboardWeb.PageLive do
+  @moduledoc false
   use QaDashboardWeb, :live_view
 
   @impl true

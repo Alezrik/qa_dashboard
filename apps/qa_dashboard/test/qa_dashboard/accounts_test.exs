@@ -482,7 +482,11 @@ defmodule QaDashboard.AccountsTest do
     alias QaDashboard.Accounts.UserIngestToken
 
     @valid_attrs %{name: "some name", token: "some token", type: "some type"}
-    @update_attrs %{name: "some updated name", token: "some updated token", type: "some updated type"}
+    @update_attrs %{
+      name: "some updated name",
+      token: "some updated token",
+      type: "some updated type"
+    }
     @invalid_attrs %{name: nil, token: nil, type: nil}
 
     def user_ingest_token_fixture(attrs \\ %{}) do
@@ -505,7 +509,9 @@ defmodule QaDashboard.AccountsTest do
     end
 
     test "create_user_ingest_token/1 with valid data creates a user_ingest_token" do
-      assert {:ok, %UserIngestToken{} = user_ingest_token} = Accounts.create_user_ingest_token(@valid_attrs)
+      assert {:ok, %UserIngestToken{} = user_ingest_token} =
+               Accounts.create_user_ingest_token(@valid_attrs)
+
       assert user_ingest_token.name == "some name"
       assert user_ingest_token.token == "some token"
       assert user_ingest_token.type == "some type"
@@ -517,7 +523,10 @@ defmodule QaDashboard.AccountsTest do
 
     test "update_user_ingest_token/2 with valid data updates the user_ingest_token" do
       user_ingest_token = user_ingest_token_fixture()
-      assert {:ok, %UserIngestToken{} = user_ingest_token} = Accounts.update_user_ingest_token(user_ingest_token, @update_attrs)
+
+      assert {:ok, %UserIngestToken{} = user_ingest_token} =
+               Accounts.update_user_ingest_token(user_ingest_token, @update_attrs)
+
       assert user_ingest_token.name == "some updated name"
       assert user_ingest_token.token == "some updated token"
       assert user_ingest_token.type == "some updated type"
@@ -525,14 +534,20 @@ defmodule QaDashboard.AccountsTest do
 
     test "update_user_ingest_token/2 with invalid data returns error changeset" do
       user_ingest_token = user_ingest_token_fixture()
-      assert {:error, %Ecto.Changeset{}} = Accounts.update_user_ingest_token(user_ingest_token, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Accounts.update_user_ingest_token(user_ingest_token, @invalid_attrs)
+
       assert user_ingest_token == Accounts.get_user_ingest_token!(user_ingest_token.id)
     end
 
     test "delete_user_ingest_token/1 deletes the user_ingest_token" do
       user_ingest_token = user_ingest_token_fixture()
       assert {:ok, %UserIngestToken{}} = Accounts.delete_user_ingest_token(user_ingest_token)
-      assert_raise Ecto.NoResultsError, fn -> Accounts.get_user_ingest_token!(user_ingest_token.id) end
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Accounts.get_user_ingest_token!(user_ingest_token.id)
+      end
     end
 
     test "change_user_ingest_token/1 returns a user_ingest_token changeset" do
