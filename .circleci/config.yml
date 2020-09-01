@@ -60,4 +60,10 @@ jobs:
       - run: mix format --check-formatted
       - run: mix test
       - run: mix credo
+      - restore_cache:
+          keys:
+            - v1-dialyzer-cache-{{ .Branch }}
       - run: MIX_ENV=dev mix dialyzer
+      - save_cache:
+          key: v1-dialyzer-cache-{{ .Branch }}
+          paths: "_build"
