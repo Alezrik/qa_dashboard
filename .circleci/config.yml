@@ -63,7 +63,10 @@ jobs:
       - restore_cache:
           keys:
             - v1-dialyzer-cache-{{ .Branch }}
-      - run: MIX_ENV=dev mix dialyzer
+      - run
+        name: Run Dialyzer
+        no_output_timeout: 30m
+        command: MIX_ENV=dev mix dialyzer
       - save_cache:
           key: v1-dialyzer-cache-{{ .Branch }}
           paths: "_build"
