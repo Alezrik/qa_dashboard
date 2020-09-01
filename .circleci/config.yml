@@ -7,6 +7,8 @@ jobs:
     docker:
       # specify the version here
       - image: circleci/elixir:1.10.2
+        environment:
+          MIX_ENV: test
       - image: circleci/postgres:10.1-alpine
         environment:
           POSTGRES_USER: postgres
@@ -34,6 +36,7 @@ jobs:
             - v1-build-cache-{{ .Branch }}
             - v1-build-cache
       - run: mix deps.get
+      - run: mix deps.compile
       - save_cache:
           key: v1-mix-cache-{{ .Branch }}-{{ checksum "mix.lock" }}
           paths: "deps"
