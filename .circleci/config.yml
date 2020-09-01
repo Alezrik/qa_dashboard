@@ -35,23 +35,23 @@ jobs:
           - v1-build-cache
       - run: mix deps.get
       - save_cache:
-        key: v1-mix-cache-{{ .Branch }}-{{ checksum "mix.lock" }}
-        paths: "deps"
+          key: v1-mix-cache-{{ .Branch }}-{{ checksum "mix.lock" }}
+          paths: "deps"
       - save_cache:
-        key: v1-mix-cache-{{ .Branch }}
-        paths: "deps"
+          key: v1-mix-cache-{{ .Branch }}
+          paths: "deps"
       - save_cache:
-        key: v1-mix-cache
-        paths: "deps"
+          key: v1-mix-cache
+          paths: "deps"
       - save_cache:
-        key: v1-build-cache-{{ .Branch }}
-        paths: "_build"
+          key: v1-build-cache-{{ .Branch }}
+          paths: "_build"
       - save_cache:
-        key: v1-build-cache
-        paths: "_build"
+          key: v1-build-cache
+          paths: "_build"
       - run:
-        name: Wait for DB
-        command: dockerize -wait tcp://localhost:5432 -timeout 1m
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run: mix ecto.create
       - run: mix ecto.migrate
       - run: mix format --check-formatted
