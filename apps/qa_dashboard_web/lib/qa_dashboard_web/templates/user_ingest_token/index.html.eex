@@ -1,0 +1,30 @@
+<h1>Listing User ingest tokens</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Token</th>
+      <th>Name</th>
+      <th>Type</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for user_ingest_token <- @user_ingest_tokens do %>
+    <tr>
+      <td><%= user_ingest_token.token %></td>
+      <td><%= user_ingest_token.name %></td>
+      <td><%= user_ingest_token.type %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.user_ingest_token_path(@conn, :show, user_ingest_token) %></span>
+        <span><%= link "Edit", to: Routes.user_ingest_token_path(@conn, :edit, user_ingest_token) %></span>
+        <span><%= link "Delete", to: Routes.user_ingest_token_path(@conn, :delete, user_ingest_token), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New User ingest token", to: Routes.user_ingest_token_path(@conn, :new) %></span>
