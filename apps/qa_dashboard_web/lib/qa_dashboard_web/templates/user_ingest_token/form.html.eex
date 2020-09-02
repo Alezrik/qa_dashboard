@@ -5,19 +5,15 @@
     </div>
   <% end %>
 
-  <%= label f, :token %>
-  <%= text_input f, :token %>
-  <%= error_tag f, :token %>
-
   <%= label f, :name %>
   <%= text_input f, :name %>
   <%= error_tag f, :name %>
 
   <%= label f, :type %>
-  <%= text_input f, :type %>
+  <%= select f, :type, ["Junit": "junit"] %>
   <%= error_tag f, :type %>
 
   <div>
-    <%= submit "Save" %>
+    <%= submit "Generate Token" %>
   </div>
 <% end %>

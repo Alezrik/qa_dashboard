@@ -3,9 +3,11 @@ defmodule QaDashboardWeb.UserIngestTokenController do
 
   alias QaDashboard.Accounts
   alias QaDashboard.Accounts.UserIngestToken
+  require Logger
 
   def index(conn, _params) do
-    user_ingest_tokens = Accounts.list_user_ingest_tokens()
+    user = conn.assigns[:current_user]
+    user_ingest_tokens = Accounts.list_user_ingest_tokens_by_user(user.id)
     render(conn, "index.html", user_ingest_tokens: user_ingest_tokens)
   end
 
@@ -15,7 +17,15 @@ defmodule QaDashboardWeb.UserIngestTokenController do
   end
 
   def create(conn, %{"user_ingest_token" => user_ingest_token_params}) do
-    case Accounts.create_user_ingest_token(user_ingest_token_params) do
+    token = :crypto.strong_rand_bytes(30) |> Base.url_encode64() |> binary_part(0, 30)
+    user = conn.assigns[:current_user]
+
+    case Accounts.create_user_ingest_token(%{
+           name: user_ingest_token_params["name"],
+           type: user_ingest_token_params["type"],
+           token: token,
+           user_id: user.id
+         }) do
       {:ok, user_ingest_token} ->
         conn
         |> put_flash(:info, "User ingest token created successfully.")
