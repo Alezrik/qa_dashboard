@@ -15,7 +15,7 @@ defmodule QaDashboard.Accounts.UserIngestToken do
   @doc false
   def changeset(user_ingest_token, attrs) do
     user_ingest_token
-    |> cast(attrs, [:token, :name, :type])
+    |> cast(attrs, [:token, :name, :type, :user_id])
     |> validate_required([:token, :name, :type])
   end
 end

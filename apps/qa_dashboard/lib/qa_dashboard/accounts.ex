@@ -361,6 +361,14 @@ defmodule QaDashboard.Accounts do
     Repo.all(UserIngestToken)
   end
 
+  def list_user_ingest_tokens_by_user(id) do
+    query =
+      from t in UserIngestToken,
+        where: t.user_id == ^id
+
+    Repo.all(query)
+  end
+
   @doc """
   Gets a single user_ingest_token.
 
