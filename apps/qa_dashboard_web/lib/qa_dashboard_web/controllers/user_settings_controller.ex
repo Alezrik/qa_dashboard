@@ -63,11 +63,11 @@ defmodule QaDashboardWeb.UserSettingsController do
     else
       AuthorizationError.handle_authorization_error(conn, "confirm_email", @object_name)
     end
-
   end
 
   def update_password(conn, %{"current_password" => password, "user" => user_params}) do
     user = conn.assigns.current_user
+
     if user |> can?(update_password(@object_name)) do
       case Accounts.update_user_password(user, password, user_params) do
         {:ok, user} ->
@@ -82,7 +82,6 @@ defmodule QaDashboardWeb.UserSettingsController do
     else
       AuthorizationError.handle_authorization_error(conn, "update_password", @object_name)
     end
-
   end
 
   defp assign_email_and_password_changesets(conn, _opts) do
