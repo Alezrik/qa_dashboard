@@ -1,4 +1,7 @@
 defmodule QaDashboard.Permissions.OrganizationUserRole do
+  @moduledoc """
+  a link between a user an organization and a role
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

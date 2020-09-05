@@ -1,4 +1,7 @@
 defmodule QaDashboard.Organizations.Organization do
+  @moduledoc """
+  your basic organization
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

@@ -1,4 +1,8 @@
 defmodule QaDashboard.Permissions.Role do
+  @moduledoc """
+  role for permission groupings
+
+  """
   use Ecto.Schema
   import Ecto.Changeset
 
