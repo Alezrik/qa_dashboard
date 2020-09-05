@@ -7,7 +7,7 @@ defmodule QaDashboard.Organizations.Organization do
 
   schema "organizations" do
     field :name, :string
-    has_many :organization_id, QaDashboard.Permissions.OrganizationUserRole
+    has_many :organization_user_roles, QaDashboard.Permissions.OrganizationUserRole
     timestamps()
   end
 

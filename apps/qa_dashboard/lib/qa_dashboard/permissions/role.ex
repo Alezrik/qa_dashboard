@@ -8,8 +8,6 @@ defmodule QaDashboard.Permissions.Role do
 
   schema "roles" do
     field :name, :string
-    has_many :user_id, QaDashboard.Permissions.OrganizationUserRole
-
     timestamps()
   end
 

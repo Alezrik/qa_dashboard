@@ -19,4 +19,10 @@ defmodule QaDashboard.Permissions.OrganizationUserRole do
     |> cast(attrs, [])
     |> validate_required([])
   end
+
+  def link_user_organization_changeset(organization_user_role, attrs) do
+    organization_user_role
+    |> cast(attrs, [:user_id, :organization_id, :role_id])
+    |> validate_required([:user_id, :organization_id, :role_id])
+  end
 end
