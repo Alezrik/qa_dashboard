@@ -9,6 +9,7 @@ defmodule QaDashboard.Accounts.User do
     field :password, :string, virtual: true
     field :hashed_password, :string
     field :confirmed_at, :naive_datetime
+    has_many :user_id, QaDashboard.Permissions.OrganizationUserRole
 
     timestamps()
   end
