@@ -2,7 +2,9 @@ defmodule QaDashboardWeb.UserAuth do
   @moduledoc false
   import Plug.Conn
   import Phoenix.Controller
+  import Canada, only: [can?: 2]
 
+  alias QaDashboardWeb.AuthorizationError
   alias QaDashboard.Accounts
   alias QaDashboardWeb.Router.Helpers, as: Routes
 
@@ -26,15 +28,19 @@ defmodule QaDashboardWeb.UserAuth do
   if you are not using LiveView.
   """
   def log_in_user(conn, user, params \\ %{}) do
-    token = Accounts.generate_user_session_token(user)
-    user_return_to = get_session(conn, :user_return_to)
+    if user |> can?(login("self")) do
+      token = Accounts.generate_user_session_token(user)
+      user_return_to = get_session(conn, :user_return_to)
 
-    conn
-    |> renew_session()
-    |> put_session(:user_token, token)
-    |> put_session(:live_socket_id, "users_sessions:#{Base.url_encode64(token)}")
-    |> maybe_write_remember_me_cookie(token, params)
-    |> redirect(to: user_return_to || signed_in_path(conn))
+      conn
+      |> renew_session()
+      |> put_session(:user_token, token)
+      |> put_session(:live_socket_id, "users_sessions:#{Base.url_encode64(token)}")
+      |> maybe_write_remember_me_cookie(token, params)
+      |> redirect(to: user_return_to || signed_in_path(conn))
+    else
+      QaDashboardWeb.AuthorizationError.handle_authorization_error(conn, "login", "login")
+    end
   end
 
   defp maybe_write_remember_me_cookie(conn, token, %{"remember_me" => "true"}) do
@@ -137,6 +143,41 @@ defmodule QaDashboardWeb.UserAuth do
       |> maybe_store_return_to()
       |> redirect(to: Routes.user_session_path(conn, :new))
       |> halt()
+    end
+  end
+
+  require Logger
+
+  def verify_user_permissions(conn, _opts) do
+    user = conn.assigns[:current_user]
+
+    with true <- check_permissions(user, conn.method, {conn.request_path, conn.params}),
+         role <- QaDashboard.Permissions.get_role!(user.role_id),
+         true <- check_permissions(role, conn.method, {conn.request_path, conn.params}) do
+      conn
+    else
+      false ->
+        QaDashboardWeb.AuthorizationError.handle_authorization_error(
+          conn,
+          conn.method,
+          inspect({conn.request_path, conn.params})
+        )
+    end
+  end
+
+  defp check_permissions(object, method, params) do
+    case method do
+      "GET" ->
+        can?(object, get(params))
+
+      "POST" ->
+        can?(object, get(params))
+
+      "PUT" ->
+        can?(object, get(params))
+
+      "DELETE" ->
+        can?(object, get(params))
     end
   end
 

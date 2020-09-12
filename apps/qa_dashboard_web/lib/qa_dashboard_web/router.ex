@@ -60,13 +60,17 @@ defmodule QaDashboardWeb.Router do
   end
 
   scope "/", QaDashboardWeb do
-    pipe_through [:browser, :require_authenticated_user]
+    pipe_through [:browser, :require_authenticated_user, :verify_user_permissions]
 
     get "/users/settings", UserSettingsController, :edit
     put "/users/settings/update_password", UserSettingsController, :update_password
     put "/users/settings/update_email", UserSettingsController, :update_email
     get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
     resources "/user_ingest_tokens", UserIngestTokenController
+    resources "/organizations", OrganizationController
+    resources "/roles", RoleController
+    resources "/organization_user_roles", OrganizationUserRoleController
+    resources "/organization_roles", OrganizationRoleController
   end
 
   scope "/", QaDashboardWeb do

@@ -449,4 +449,8 @@ defmodule QaDashboard.Accounts do
   def change_user_ingest_token(%UserIngestToken{} = user_ingest_token, attrs \\ %{}) do
     UserIngestToken.changeset(user_ingest_token, attrs)
   end
+
+  def user_load_organization_roles(user) do
+    Repo.preload(user, :organization_user_role_ids)
+  end
 end

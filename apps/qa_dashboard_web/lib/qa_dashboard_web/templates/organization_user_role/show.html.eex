@@ -1,0 +1,8 @@
+<h1>Show Organization user role</h1>
+
+<ul>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.organization_user_role_path(@conn, :edit, @organization_user_role) %></span>
+<span><%= link "Back", to: Routes.organization_user_role_path(@conn, :index) %></span>

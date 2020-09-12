@@ -1,17 +1,19 @@
 defmodule QaDashboardWeb.UserSettingsController do
   use QaDashboardWeb, :controller
+  import Canada, only: [can?: 2]
+  alias QaDashboardWeb.AuthorizationError
 
   alias QaDashboard.Accounts
   alias QaDashboardWeb.UserAuth
 
   plug :assign_email_and_password_changesets
-
+  @object_name "user_settings"
   def edit(conn, _params) do
     render(conn, "edit.html")
   end
 
   def update_email(conn, %{"current_password" => password, "user" => user_params}) do
-    user = conn.assigns.current_user
+    user = conn.assigns[:current_user]
 
     case Accounts.apply_user_email(user, password, user_params) do
       {:ok, applied_user} ->
@@ -48,7 +50,7 @@ defmodule QaDashboardWeb.UserSettingsController do
   end
 
   def update_password(conn, %{"current_password" => password, "user" => user_params}) do
-    user = conn.assigns.current_user
+    user = conn.assigns[:current_user]
 
     case Accounts.update_user_password(user, password, user_params) do
       {:ok, user} ->

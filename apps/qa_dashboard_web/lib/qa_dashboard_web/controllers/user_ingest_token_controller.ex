@@ -1,9 +1,12 @@
 defmodule QaDashboardWeb.UserIngestTokenController do
   use QaDashboardWeb, :controller
-
+  import Canada, only: [can?: 2]
+  alias QaDashboardWeb.AuthorizationError
   alias QaDashboard.Accounts
   alias QaDashboard.Accounts.UserIngestToken
   require Logger
+
+  @object_name "ingest_tokens"
 
   def index(conn, _params) do
     user = conn.assigns[:current_user]
