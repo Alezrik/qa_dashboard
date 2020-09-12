@@ -151,42 +151,46 @@ defmodule QaDashboardWeb.UserAuth do
   def verify_user_permissions(conn, _opts) do
     user = conn.assigns[:current_user]
 
-    user_results =
-      case conn.method do
-        "GET" -> can?(user, get({conn.request_path, conn.params}))
-        "POST" -> can?(user, post({conn.request_path, conn.params}))
-        "PUT" -> can?(user, put({conn.request_path, conn.params}))
-        "DELETE" -> can?(user, delete({conn.request_path, conn.params}))
-      end
+    user_results = check_permissions(user, conn.method, {conn.request_path, conn.params})
 
-    if user_results == false do
-      QaDashboardWeb.AuthorizationError.handle_authorization_error(
-        conn,
-        conn.method,
-        {conn.request_path, conn.params}
-      )
-    end
+    if user_results == false,
+      do:
+        QaDashboardWeb.AuthorizationError.handle_authorization_error(
+          conn,
+          conn.method,
+          {conn.request_path, conn.params}
+        )
 
     role = QaDashboard.Permissions.get_role!(user.role_id)
 
-    role_result =
-      case conn.method do
-        "GET" -> can?(role, get({conn.request_path, conn.params}))
-        "POST" -> can?(role, post({conn.request_path, conn.params}))
-        "PUT" -> can?(role, put({conn.request_path, conn.params}))
-        "DELETE" -> can?(role, delete({conn.request_path, conn.params}))
-      end
+    role_result = check_permissions(role, conn.method, {conn.request_path, conn.params})
 
-    if role_result == false do
-      QaDashboardWeb.AuthorizationError.handle_authorization_error(
-        conn,
-        conn.method,
-        {conn.request_path, conn.params}
-      )
-    end
+    if role_result == false,
+      do:
+        QaDashboardWeb.AuthorizationError.handle_authorization_error(
+          conn,
+          conn.method,
+          {conn.request_path, conn.params}
+        )
 
     conn
     #
+  end
+
+  defp check_permissions(object, method, params) do
+    case method do
+      "GET" ->
+        can?(object, get(params))
+
+      "POST" ->
+        can?(object, get(params))
+
+      "PUT" ->
+        can?(object, get(params))
+
+      "DELETE" ->
+        can?(object, get(params))
+    end
   end
 
   defp maybe_store_return_to(%{method: "GET", request_path: request_path} = conn) do
