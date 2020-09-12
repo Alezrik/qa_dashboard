@@ -70,6 +70,7 @@ defmodule QaDashboardWeb.Router do
     resources "/organizations", OrganizationController
     resources "/roles", RoleController
     resources "/organization_user_roles", OrganizationUserRoleController
+    resources "/organization_roles", OrganizationRoleController
   end
 
   scope "/", QaDashboardWeb do

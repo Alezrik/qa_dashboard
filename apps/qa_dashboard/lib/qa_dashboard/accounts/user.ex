@@ -9,6 +9,7 @@ defmodule QaDashboard.Accounts.User do
     field :password, :string, virtual: true
     field :hashed_password, :string
     field :confirmed_at, :naive_datetime
+    field :role_id, :id
 
     has_many :organization_user_role_ids,
              {"organization_user_roles", QaDashboard.Permissions.OrganizationUserRole},
@@ -28,7 +29,8 @@ defmodule QaDashboard.Accounts.User do
   """
   def registration_changeset(user, attrs) do
     user
-    |> cast(attrs, [:email, :password])
+    |> cast(attrs, [:email, :password, :role_id])
+    |> validate_required([:role_id])
     |> validate_email()
     |> validate_password()
   end

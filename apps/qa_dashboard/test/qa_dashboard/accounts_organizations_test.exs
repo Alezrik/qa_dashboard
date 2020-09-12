@@ -19,7 +19,7 @@ defmodule QaDashboard.AccountsOrganizationsTest do
       {:ok, role} =
         attrs
         |> Enum.into(@role_data)
-        |> Permissions.create_role()
+        |> Permissions.create_organization_role()
 
       role
     end
@@ -47,7 +47,7 @@ defmodule QaDashboard.AccountsOrganizationsTest do
         %{
           user_id: user.id,
           organization_id: organization.id,
-          role_id: role.id
+          organization_role_id: role.id
         }
       )
 

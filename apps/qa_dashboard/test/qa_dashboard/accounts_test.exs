@@ -85,7 +85,22 @@ defmodule QaDashboard.AccountsTest do
 
     test "registers users with a hashed password" do
       email = unique_user_email()
-      {:ok, user} = Accounts.register_user(%{email: email, password: valid_user_password()})
+      roles = QaDashboard.Permissions.list_roles()
+
+      role =
+        case roles do
+          [] ->
+            {:ok, role} = QaDashboard.Permissions.create_role(%{name: "superAdmin"})
+            {:ok, role} = QaDashboard.Permissions.create_role(%{name: "user"})
+            role
+
+          roles ->
+            List.first(Enum.filter(roles, fn x -> x.name == "user" end))
+        end
+
+      {:ok, user} =
+        Accounts.register_user(%{email: email, password: valid_user_password(), role_id: role.id})
+
       assert user.email == email
       assert is_binary(user.hashed_password)
       assert is_nil(user.confirmed_at)
@@ -96,7 +111,7 @@ defmodule QaDashboard.AccountsTest do
   describe "change_user_registration/2" do
     test "returns a changeset" do
       assert %Ecto.Changeset{} = changeset = Accounts.change_user_registration(%User{})
-      assert changeset.required == [:password, :email]
+      assert changeset.required == [:password, :email, :role_id]
     end
   end
 

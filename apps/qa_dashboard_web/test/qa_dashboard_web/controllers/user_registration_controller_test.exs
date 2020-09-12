@@ -22,6 +22,7 @@ defmodule QaDashboardWeb.UserRegistrationControllerTest do
     @tag :capture_log
     test "creates account and logs the user in", %{conn: conn} do
       email = unique_user_email()
+      setup_roles()
 
       conn =
         post(conn, Routes.user_registration_path(conn, :create), %{

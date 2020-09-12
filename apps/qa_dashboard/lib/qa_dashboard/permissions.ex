@@ -200,4 +200,100 @@ defmodule QaDashboard.Permissions do
       ) do
     OrganizationUserRole.changeset(organization_user_role, attrs)
   end
+
+  alias QaDashboard.Permissions.OrganizationRole
+
+  @doc """
+  Returns the list of organization_roles.
+
+  ## Examples
+
+      iex> list_organization_roles()
+      [%OrganizationRole{}, ...]
+
+  """
+  def list_organization_roles do
+    Repo.all(OrganizationRole)
+  end
+
+  @doc """
+  Gets a single organization_role.
+
+  Raises `Ecto.NoResultsError` if the Organization role does not exist.
+
+  ## Examples
+
+      iex> get_organization_role!(123)
+      %OrganizationRole{}
+
+      iex> get_organization_role!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_organization_role!(id), do: Repo.get!(OrganizationRole, id)
+
+  @doc """
+  Creates a organization_role.
+
+  ## Examples
+
+      iex> create_organization_role(%{field: value})
+      {:ok, %OrganizationRole{}}
+
+      iex> create_organization_role(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_organization_role(attrs \\ %{}) do
+    %OrganizationRole{}
+    |> OrganizationRole.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a organization_role.
+
+  ## Examples
+
+      iex> update_organization_role(organization_role, %{field: new_value})
+      {:ok, %OrganizationRole{}}
+
+      iex> update_organization_role(organization_role, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_organization_role(%OrganizationRole{} = organization_role, attrs) do
+    organization_role
+    |> OrganizationRole.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a organization_role.
+
+  ## Examples
+
+      iex> delete_organization_role(organization_role)
+      {:ok, %OrganizationRole{}}
+
+      iex> delete_organization_role(organization_role)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_organization_role(%OrganizationRole{} = organization_role) do
+    Repo.delete(organization_role)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking organization_role changes.
+
+  ## Examples
+
+      iex> change_organization_role(organization_role)
+      %Ecto.Changeset{data: %OrganizationRole{}}
+
+  """
+  def change_organization_role(%OrganizationRole{} = organization_role, attrs \\ %{}) do
+    OrganizationRole.changeset(organization_role, attrs)
+  end
 end

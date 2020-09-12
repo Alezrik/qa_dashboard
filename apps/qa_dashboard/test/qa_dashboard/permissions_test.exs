@@ -133,4 +133,74 @@ defmodule QaDashboard.PermissionsTest do
       assert %Ecto.Changeset{} = Permissions.change_organization_user_role(organization_user_role)
     end
   end
+
+  describe "organization_roles" do
+    alias QaDashboard.Permissions.OrganizationRole
+
+    @valid_attrs %{name: "some name"}
+    @update_attrs %{name: "some updated name"}
+    @invalid_attrs %{name: nil}
+
+    def organization_role_fixture(attrs \\ %{}) do
+      {:ok, organization_role} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Permissions.create_organization_role()
+
+      organization_role
+    end
+
+    test "list_organization_roles/0 returns all organization_roles" do
+      organization_role = organization_role_fixture()
+      assert Permissions.list_organization_roles() == [organization_role]
+    end
+
+    test "get_organization_role!/1 returns the organization_role with given id" do
+      organization_role = organization_role_fixture()
+      assert Permissions.get_organization_role!(organization_role.id) == organization_role
+    end
+
+    test "create_organization_role/1 with valid data creates a organization_role" do
+      assert {:ok, %OrganizationRole{} = organization_role} =
+               Permissions.create_organization_role(@valid_attrs)
+
+      assert organization_role.name == "some name"
+    end
+
+    test "create_organization_role/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Permissions.create_organization_role(@invalid_attrs)
+    end
+
+    test "update_organization_role/2 with valid data updates the organization_role" do
+      organization_role = organization_role_fixture()
+
+      assert {:ok, %OrganizationRole{} = organization_role} =
+               Permissions.update_organization_role(organization_role, @update_attrs)
+
+      assert organization_role.name == "some updated name"
+    end
+
+    test "update_organization_role/2 with invalid data returns error changeset" do
+      organization_role = organization_role_fixture()
+
+      assert {:error, %Ecto.Changeset{}} =
+               Permissions.update_organization_role(organization_role, @invalid_attrs)
+
+      assert organization_role == Permissions.get_organization_role!(organization_role.id)
+    end
+
+    test "delete_organization_role/1 deletes the organization_role" do
+      organization_role = organization_role_fixture()
+      assert {:ok, %OrganizationRole{}} = Permissions.delete_organization_role(organization_role)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Permissions.get_organization_role!(organization_role.id)
+      end
+    end
+
+    test "change_organization_role/1 returns a organization_role changeset" do
+      organization_role = organization_role_fixture()
+      assert %Ecto.Changeset{} = Permissions.change_organization_role(organization_role)
+    end
+  end
 end

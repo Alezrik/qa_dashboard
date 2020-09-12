@@ -1,0 +1,26 @@
+<h1>Listing Organization roles</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for organization_role <- @organization_roles do %>
+    <tr>
+      <td><%= organization_role.name %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.organization_role_path(@conn, :show, organization_role) %></span>
+        <span><%= link "Edit", to: Routes.organization_role_path(@conn, :edit, organization_role) %></span>
+        <span><%= link "Delete", to: Routes.organization_role_path(@conn, :delete, organization_role), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Organization role", to: Routes.organization_role_path(@conn, :new) %></span>
