@@ -14,6 +14,5 @@ defmodule QaDashboardWeb.AuthorizationError do
       "Authorization Error, you do not have access to: " <> action <> " on " <> module_name
     )
     |> redirect(to: Routes.page_path(conn, :index))
-    |> halt()
   end
 end

@@ -151,30 +151,18 @@ defmodule QaDashboardWeb.UserAuth do
   def verify_user_permissions(conn, _opts) do
     user = conn.assigns[:current_user]
 
-    user_results = check_permissions(user, conn.method, {conn.request_path, conn.params})
-
-    if user_results == false,
-      do:
+    with true <- check_permissions(user, conn.method, {conn.request_path, conn.params}),
+         role <- QaDashboard.Permissions.get_role!(user.role_id),
+         true <- check_permissions(role, conn.method, {conn.request_path, conn.params}) do
+      conn
+    else
+      false ->
         QaDashboardWeb.AuthorizationError.handle_authorization_error(
           conn,
           conn.method,
-          {conn.request_path, conn.params}
+          inspect({conn.request_path, conn.params})
         )
-
-    role = QaDashboard.Permissions.get_role!(user.role_id)
-
-    role_result = check_permissions(role, conn.method, {conn.request_path, conn.params})
-
-    if role_result == false,
-      do:
-        QaDashboardWeb.AuthorizationError.handle_authorization_error(
-          conn,
-          conn.method,
-          {conn.request_path, conn.params}
-        )
-
-    conn
-    #
+    end
   end
 
   defp check_permissions(object, method, params) do
