@@ -146,6 +146,49 @@ defmodule QaDashboardWeb.UserAuth do
     end
   end
 
+  require Logger
+
+  def verify_user_permissions(conn, _opts) do
+    user = conn.assigns[:current_user]
+
+    user_results =
+      case conn.method do
+        "GET" -> can?(user, get({conn.request_path, conn.params}))
+        "POST" -> can?(user, post({conn.request_path, conn.params}))
+        "PUT" -> can?(user, put({conn.request_path, conn.params}))
+        "DELETE" -> can?(user, delete({conn.request_path, conn.params}))
+      end
+
+    if user_results == false do
+      QaDashboardWeb.AuthorizationError.handle_authorization_error(
+        conn,
+        conn.method,
+        {conn.request_path, conn.params}
+      )
+    end
+
+    role = QaDashboard.Permissions.get_role!(user.role_id)
+
+    role_result =
+      case conn.method do
+        "GET" -> can?(role, get({conn.request_path, conn.params}))
+        "POST" -> can?(role, post({conn.request_path, conn.params}))
+        "PUT" -> can?(role, put({conn.request_path, conn.params}))
+        "DELETE" -> can?(role, delete({conn.request_path, conn.params}))
+      end
+
+    if role_result == false do
+      QaDashboardWeb.AuthorizationError.handle_authorization_error(
+        conn,
+        conn.method,
+        {conn.request_path, conn.params}
+      )
+    end
+
+    conn
+    #
+  end
+
   defp maybe_store_return_to(%{method: "GET", request_path: request_path} = conn) do
     put_session(conn, :user_return_to, request_path)
   end

@@ -3,6 +3,7 @@ defimpl Canada.Can, for: QaDashboard.Accounts.User do
     Permissions for dashboard,
     for right this instance, all is true
   """
+  import Canada, only: [can?: 2]
 
   require Logger
 
@@ -11,7 +12,7 @@ defimpl Canada.Can, for: QaDashboard.Accounts.User do
   """
   def can?(user, action, opts) do
     Logger.warn(
-      "DEFAULT_AUTHORIZATION: #{user.email} id: #{user.id} was allowed default action #{
+      "USER_DEFAULT_AUTHORIZATION: #{user.email} id: #{user.id} was allowed default action #{
         inspect(action)
       } on #{inspect(opts)}"
     )

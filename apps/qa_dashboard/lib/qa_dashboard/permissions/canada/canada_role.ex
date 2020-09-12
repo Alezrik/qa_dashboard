@@ -9,11 +9,11 @@ defimpl Canada.Can, for: QaDashboard.Permissions.Role do
   @doc """
     All users outside of auth/not auth can do anything
   """
-  def can?(user, action, opts) do
+  def can?(role, action, opts) do
     Logger.warn(
-      "DEFAULT_AUTHORIZATION: #{user.email} id: #{user.id} was allowed default action #{
-        inspect(action)
-      } on #{inspect(opts)}"
+      "USER_ROLE_AUTHORIZATION: role: #{role.name} was allowed default action #{inspect(action)} on #{
+        inspect(opts)
+      }"
     )
 
     true

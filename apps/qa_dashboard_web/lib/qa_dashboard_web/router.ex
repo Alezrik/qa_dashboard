@@ -60,7 +60,7 @@ defmodule QaDashboardWeb.Router do
   end
 
   scope "/", QaDashboardWeb do
-    pipe_through [:browser, :require_authenticated_user]
+    pipe_through [:browser, :require_authenticated_user, :verify_user_permissions]
 
     get "/users/settings", UserSettingsController, :edit
     put "/users/settings/update_password", UserSettingsController, :update_password
