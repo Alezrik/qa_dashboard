@@ -67,7 +67,8 @@ defmodule QaDashboardWeb.Router do
     put "/users/settings/update_email", UserSettingsController, :update_email
     get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
     resources "/user_ingest_tokens", UserIngestTokenController
-    resources "/organizations", OrganizationController
+    resources "/admin/organizations", OrganizationController
+    get "/organizations", UserOrganizationController, :index
     resources "/roles", RoleController
     resources "/organization_user_roles", OrganizationUserRoleController
     resources "/organization_roles", OrganizationRoleController

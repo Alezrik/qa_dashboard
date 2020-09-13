@@ -5,7 +5,8 @@
       <%= if @current_user do %>
       <li ><%= link "Settings", to: Routes.user_settings_path(@conn, :edit) %></li>
       <li ><%= link "IngestTokens", to: Routes.user_ingest_token_path(@conn, :index) %></li>
-      <li ><%= link "Organizations", to: Routes.organization_path(@conn, :index)%></li>
+      <li ><%= link "Admin Organizations", to: Routes.organization_path(@conn, :index)%></li>
+      <li ><%= link "Organizations", to: Routes.user_organization_path(@conn, :index)%></li>
       <li ><%= link "Roles", to: Routes.role_path(@conn, :index) %></li>
       <li ><%= link "Organization Roles", to: Routes.organization_role_path(@conn, :index) %></li>
       <li ><%= link "Organization User Roles", to: Routes.organization_user_role_path(@conn, :index) %></li>
